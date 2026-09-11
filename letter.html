@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una Carta para Paz 🐧🌸</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        rosebg: '#FDF7F8',
+                        softpink: '#FBE8EC',
+                        blush: '#F4C2C2',
+                        accentpink: '#E87A90',
+                        deeprose: '#9E3B55',
+                        textdark: '#4A3E3D',
+                        darkbg: '#1A1416',
+                        darkcard: 'rgba(35, 25, 28, 0.85)',
+                        darkborder: 'rgba(158, 59, 85, 0.3)',
+                        darktext: '#F3E5E8'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        display: ['Italiana', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FDF7F8;
+            color: #4A3E3D;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(251, 232, 236, 0.8) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(244, 194, 194, 0.4) 0%, transparent 45%);
+            background-attachment: fixed;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .dark body {
+            background-color: #1A1416;
+            color: #F3E5E8;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(158, 59, 85, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(74, 30, 42, 0.2) 0%, transparent 45%);
+        }
+
+        .soft-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(244, 194, 194, 0.4);
+            box-shadow: 0 15px 35px -10px rgba(232, 122, 144, 0.1);
+        }
+
+        .dark .soft-card {
+            background: rgba(35, 25, 28, 0.88);
+            border-color: rgba(158, 59, 85, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .envelope-shadow {
+            box-shadow: 0 20px 40px -15px rgba(232, 122, 144, 0.25);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen py-10 px-4 selection:bg-blush selection:text-deeprose flex flex-col justify-between">
+
+    <!-- BARRA SUPERIOR DE NAVEGACIÓN -->
+    <header class="max-w-2xl mx-auto w-full flex justify-between items-center mb-8">
+        <a href="letter.html" class="text-xs bg-softpink/80 dark:bg-deeprose/40 px-4 py-2 rounded-full border border-blush/50 dark:border-deeprose/50 transition hover:scale-105 text-deeprose dark:text-darktext font-medium flex items-center gap-1.5">
+            <span>←</span> Volver a la página principal
+        </a>
+        <button onclick="toggleDarkMode()" id="theme-btn" class="text-xs bg-softpink/80 dark:bg-deeprose/40 px-3.5 py-2 rounded-full border border-blush/50 dark:border-deeprose/50 transition flex items-center gap-1 hover:scale-105">
+            <span id="theme-icon">🌙</span>
+        </button>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL DE LA CARTA -->
+    <main class="max-w-2xl mx-auto w-full my-auto">
+        
+        <!-- VISTA DE SOBRE CERRADO -->
+        <div id="closed-envelope" class="soft-card envelope-shadow rounded-3xl p-10 text-center space-y-6 transition-all duration-500 transform hover:-translate-y-1">
+            <div class="relative inline-block">
+                <span class="text-6xl block animate-bounce">🐧💌</span>
+                <span class="absolute -top-1 -right-1 text-xl">🌷</span>
+            </div>
+            
+            <div class="space-y-2">
+                <span class="text-xs font-sans tracking-widest uppercase text-accentpink font-semibold">Un mensaje especial de cumpleaños</span>
+                <h1 class="font-serif text-3xl md:text-4xl text-deeprose dark:text-accentpink italic">Para ti, Paz 🌸</h1>
+                <p class="text-xs md:text-sm text-textdark/70 dark:text-darktext/70 font-light max-w-sm mx-auto">
+                    Una cartita para recordarte lo mucho que vales.
+                </p>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="openCustomLetter()" class="bg-accentpink hover:bg-deeprose text-white text-xs font-medium tracking-widest uppercase px-8 py-3.5 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105">
+                    ✨ Abrir mi carta
+                </button>
+            </div>
+        </div>
+
+        <!-- CARTA DESPLEGADA (OCULTA AL INICIO) -->
+        <article id="opened-letter" class="hidden soft-card rounded-3xl p-8 md:p-12 space-y-8 relative overflow-hidden transition-all duration-700 opacity-0 transform translate-y-4">
+            
+            <div class="text-center border-b border-blush/40 dark:border-deeprose/30 pb-6 space-y-2">
+                <span class="text-3xl block">🐧🌷🌼</span>
+                <span class="text-[11px] font-sans tracking-widest uppercase text-accentpink font-semibold">11 de septiembre</span>
+                <h2 class="font-serif text-3xl text-deeprose dark:text-accentpink italic">Para la cumpleañera especial</h2>
+            </div>
+
+            <div class="space-y-5 text-sm md:text-base text-textdark/90 dark:text-darktext/90 leading-relaxed font-light font-sans italic">
+                <p>
+                    <strong class="font-serif text-base text-deeprose dark:text-accentpink not-italic">Pingüinita,</strong>
+                </p>
+                <p>
+                    Hoy es un día super especial porque se celebra el día que nació una personita muy única. Quería tomarme un momento para escribirte estas palabras y recordarte algo que a veces los días de trabajo nos hacen olvidar: lo verdaderamente valiosa que eres para tu familia y para mi 🥹🫶.
+                </p>
+                <p>
+                    Así como las flores llenan de color y alegría cualquier lugar con su presencia, tú tienes eso mismo 😊. Desde que llegamos a hablar de ha vuelto super interesante todas las platicas. Tienes una personalidad increíble, una sonrisa que alegra a cualquiera y algo único que ilumina con tu presencia ✨.
+                </p>
+                <p>
+                    Me encanta cada pequeña plática que compartimos, tus ocurrencias jajaja y esta amistad que poco a poco fue creciendo, asi como la confianza ❤️‍🩹. Creeme que esto es de las cosas más inesperadas de este año jajaja, y le doy muchas gracias a Dios por haberte conocido 🙏.
+                </p>
+                <p>
+                    Quiero que sepas que te quiero y que estas muy presente en mi día a día, siempre te pienso en lo que haga. Me hace muy feliz verte cumplir tus metas 🎉 y avanzar poco a poco como quien tu eres. En este nuevo año que empiezas, deseo de todo corazón que se te devuelva todo el cariño, la bondad y el aprecio que tú le regalas a los que te rodean. Que nunca te falten motivos para sonreír, momentos de tranquilidad y personas que te valoren.
+                </p>
+                <p>
+                    Gracias por ser tú, por cada risa compartida 😁 y por regalarme ese rinconcito en tu vida jajaja 🤍. Recuerda siempre que, pase lo que pase o en el momento en que lo necesites, aquí tienes a este pingüinito 🐧 apoyándote, escuchándote y celebrando cada uno de tus logros a tu lado.
+                </p>
+            </div>
+
+            <div class="pt-6 border-t border-blush/40 dark:border-deeprose/30 flex flex-col items-end space-y-1">
+                <span class="text-xs text-textdark/60 dark:text-darktext/60 italic font-serif">Con todo mi cariño siempre,</span>
+                <span class="font-serif text-lg font-bold text-deeprose dark:text-accentpink tracking-wide">— Joshua 🐧💖</span>
+            </div>
+
+            <div class="text-center pt-4">
+                <button onclick="launchLoveConfetti()" class="py-2.5 px-6 bg-softpink dark:bg-deeprose/40 hover:bg-blush dark:hover:bg-deeprose/60 text-deeprose dark:text-darktext text-xs font-medium rounded-full border border-blush/50 dark:border-deeprose/40 transition transform active:scale-95">
+                    💖 Lanzar confeti para Paz
+                </button>
+            </div>
+        </article>
+
+    </main>
+
+    <footer class="max-w-2xl mx-auto w-full text-center pt-8 text-[11px] text-textdark/40 dark:text-darktext/40 font-light">
+        Creado con mucho cariño para Paz • 11.09.26
+    </footer>
+
+    <script>
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon').innerText = isDark ? '☀️' : '🌙';
+            localStorage.setItem('paz_theme', isDark ? 'dark' : 'light');
+        }
+
+        if (localStorage.getItem('paz_theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.getElementById('theme-icon').innerText = '☀️';
+        }
+
+        function openCustomLetter() {
+            const envelope = document.getElementById('closed-envelope');
+            const letter = document.getElementById('opened-letter');
+
+            envelope.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                envelope.classList.add('hidden');
+                letter.classList.remove('hidden');
+                setTimeout(() => {
+                    letter.classList.remove('opacity-0', 'translate-y-4');
+                    letter.classList.add('opacity-100', 'translate-y-0');
+                    launchLoveConfetti();
+                }, 50);
+            }, 400);
+        }
+
+        function launchLoveConfetti() {
+            confetti({
+                particleCount: 70,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#F4C2C2', '#E87A90', '#9E3B55', '#FBE8EC', '#86efac', '#fde047']
+            });
+        }
+    </script>
+</body>
+</html>
